@@ -43,7 +43,7 @@ class AbstractYadiskHandler(ABC):
         return False
 
     @abstractmethod
-    def log(self, content: AnyStr, level=logging.DEBUG):
+    def log(self, content: AnyStr, level='debug'):
         pass
 
     @abstractmethod
@@ -100,13 +100,7 @@ class AbstractYadiskHandler(ABC):
         """
         Abstract method for sending async requests and
         :param request_params: list with requests params
-        :return:
         """
+        pass
 
-        # Firstly, we create all async tasks
-        self.create_tasks(requests_params=request_params)
 
-        # Then, we wait for all tasks to finish and collect results
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        asyncio.run(self.send_requests())
-        return self.responses
