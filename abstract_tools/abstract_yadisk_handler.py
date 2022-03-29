@@ -4,14 +4,18 @@ from yadisk import YaDisk
 from typing import AnyStr, List
 import aiohttp
 import asyncio
+from yadisk_async import YaDisk as YaDiskAsync
 
 
 class AbstractYadiskHandler(ABC):
     def __init__(self, token: str, logger=None):
 
-        # Create YaDisk object based on token
+        # Initialize token for YaDisk
         self.token = token
+
+        # Create sync and async versions of YaDisk object based on token
         self.disk = YaDisk(token=self.token)
+        self.disk_async = YaDiskAsync(token=self.token)
 
         # Set logger for YaDisk Handler object
         if logger is not None:
@@ -65,7 +69,7 @@ class AbstractYadiskHandler(ABC):
         pass
 
     @abstractmethod
-    def create_upload_task(self, session: aiohttp.ClientSession, local_path, remote_path):
+    def create_upload_task(self, local_path, remote_path):
         """
         Abstract method for creating async upload task
         :param session: aiohttp session for making request
@@ -75,7 +79,7 @@ class AbstractYadiskHandler(ABC):
         pass
 
     @abstractmethod
-    def create_download_task(self, session: aiohttp.ClientSession, local_path, remote_path):
+    def create_download_task(self, local_path, remote_path):
         """
         Abstract method for creating async download task
         :param session: aiohttp session for making request
